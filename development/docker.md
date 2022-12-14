@@ -63,10 +63,11 @@ docker container run -P IMAGE
 
 ```bash
 # Examples
-
 docker container run alpine echo "Hello world"
-
 docker container run centos ping -c 5 127.0.0.1
+docker container run -d --name trivia fundamentalsofdocker/trivia:ed2
+docker container stop trivia
+docker container start trivia
 ```
 
 ### Managing single containers
@@ -135,7 +136,7 @@ docker ps
 
 # List all containers, including stopped
 docker container ls -a
-docker container ps -a
+docker ps -a
 
 # Show a container output
 docker container logs CONTAINER
@@ -151,6 +152,15 @@ docker container diff CONTAINER
 
 # Show information of a container (json formatted)
 docker container inspect CONTAINER
+```
+
+```bash
+# Examples
+docker container inspect trivia
+docker container inspect -f "{{json .State}}" trivia | jq
+docker container logs trivia
+docker container logs --tail 5 trivia
+docker container logs --tail 5 --follow trivia
 ```
 
 ### Running commands
@@ -176,4 +186,11 @@ docker container exec -i -t CONTAINER /bin/bash
 
 # Wait until the container terminates and returns the exit code
 docker container wait CONTAINER
+```
+
+```bash
+# Examples
+docker container exec -i -t trivia /bin/sh
+docker container exec trivia ps
+docker container attach trivia # Ctrl+P + Ctrl+Q to detach
 ```
